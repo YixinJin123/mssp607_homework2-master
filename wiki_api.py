@@ -30,7 +30,7 @@ def __get(function_key, key, parameters, check_cache=True, write_cache=True):
     md5 = hashlib.md5(params_unicode).hexdigest()
     return_json = None
 
-    cache_file = os.path.join(cache_path, function_key, str(key), md5)
+    cache_file = os.path.join(cache_path, function_key, md5)
     cache_exists = os.path.isfile(cache_file)
     if cache_exists:
         try:
@@ -86,8 +86,9 @@ def __remove_tables_and_scripts(tree):
 def page_text(name, format, include_tables = False):
     try:
         result = __api_GET_latest_page(name)
-    except:
+    except Exception as e:
         print("API request failed.")
+        print(e)
     if result:
         e = etree.fromstring(result)
         if not include_tables:
